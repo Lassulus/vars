@@ -37,7 +37,8 @@ let
         all_files_missing=true
         all_files_present=true
         ${lib.concatMapStringsSep "\n" (file: ''
-          if test -e ${lib.escapeShellArg file.path} ; then
+          OUT_FILE="$OUT_DIR"/${if file.secret then "secret" else "public"}/${file.generator}/${file.name}
+          if test -e "$OUT_FILE"; then
             all_files_missing=false
           else
             all_files_present=false
