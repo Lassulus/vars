@@ -36,6 +36,7 @@ let
       ${lib.concatMapStringsSep "\n" (gen: ''
         all_files_missing=true
         all_files_present=true
+        echo "Checking vars for ${gen.name}..."
         ${lib.concatMapStringsSep "\n" (file: ''
           OUT_FILE="$OUT_DIR"/${if file.secret then "secret" else "public"}/${file.generator}/${file.name}
           if test -e "$OUT_FILE"; then
