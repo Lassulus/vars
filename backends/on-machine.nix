@@ -46,7 +46,7 @@ let
         '') (lib.attrValues gen.files)}
 
         if [ $all_files_missing = false ] && [ $all_files_present = false ] ; then
-          echo "Inconsistent state for generator: {gen.name}"
+          echo "Inconsistent state for generator: ${gen.name}"
           exit 1
         fi
         if [ $all_files_present = true ] ; then
