@@ -46,6 +46,12 @@ let
           fi
         '') (lib.attrValues gen.files)}
 
+        # outputs
+        out=$(mktemp -d)
+        trap 'rm -rf $out' EXIT
+        export out
+        mkdir -p "$out"
+
         if [ $all_files_missing = false ] && [ $all_files_present = false ] ; then
           echo "Inconsistent state for generator: ${gen.name}"
           exit 1
@@ -80,12 +86,6 @@ let
             '') (lib.attrValues config.vars.generators.${input}.files)}
           '') gen.dependencies}
 
-          # outputs
-          out=$(mktemp -d)
-          trap 'rm -rf $out' EXIT
-          export out
-          mkdir -p "$out"
-
           (
             # prepare PATH
             unset PATH
@@ -112,8 +112,15 @@ let
             mkdir -p "$(dirname "$OUT_FILE")"
             mv "$out"/${file.name} "$OUT_FILE"
           '') (lib.attrValues gen.files)}
-          rm -rf "$out"
         fi
+
+        # move the files to the correct location
+        ${lib.concatMapStringsSep "\n" (file: ''
+          OUT_FILE="$OUT_DIR"/${if file.secret then "secret" else "public"}/${file.generator}/${file.name}
+          chown ${file.owner}:${file.group} "''${OUT_FILE}"
+          chmod ${file.mode} "''${OUT_FILE}"
+        '') (lib.attrValues gen.files)}
+        rm -rf "$out"
       '') sortedGenerators}
     '';
   };
