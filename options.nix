@@ -93,7 +93,7 @@
                     mode = lib.mkOption {
                       type = lib.types.strMatching "^[0-7]{4}$";
                       description = "The unix file mode of the file. Must be a 4-digit octal number.";
-                      default = "0400";
+                      default = if file.config.group == "root" then "0400" else "0440";
                     };
                     deploy = lib.mkOption {
                       description = ''
