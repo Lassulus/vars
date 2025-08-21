@@ -82,6 +82,21 @@
                       default = generator.config.name;
                       defaultText = "Name of the generator";
                     };
+                    owner = lib.mkOption {
+                      description = "The user name or id that will own the file.";
+                      type = lib.types.str;
+                      default = "root";
+                    };
+                    group = lib.mkOption {
+                      description = "The group name or id that will own the file.";
+                      type = lib.types.str;
+                      default = "root";
+                    };
+                    mode = lib.mkOption {
+                      description = "The unix file mode of the file. Must be a 4-digit octal number.";
+                      type = lib.types.strMatching "^[0-7]{4}$";
+                      default = if file.config.group == "root" then "0400" else "0440";
+                    };
                     deploy = lib.mkOption {
                       description = ''
                         Whether the file should be deployed to the target machine.
