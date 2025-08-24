@@ -16,6 +16,7 @@
     in {
       nixosModules.default = { imports = [ ./options.nix ]; };
       nixosModules.backend-on-machine = { imports = [ ./backends/on-machine.nix ]; };
+      nixosModules.generators = { imports = [ ./generators ]; };
       # TODO fix tests
       checks = forAllSystems (system: let
         tests = {
