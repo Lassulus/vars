@@ -15,7 +15,7 @@
       forAllSystems = lib.genAttrs supportedSystems;
     in {
       nixosModules.default = { imports = [ ./options.nix ]; };
-      nixosModules.backend-on-machine = { imports = [ ./backends/on-machine.nix ]; };
+      nixosModules.backend-on-machine = { imports = [ ./backends/on-machine ]; };
       checks = forAllSystems (system: let
         tests = {
           testing = inputs.nixpkgs.lib.nixos.runTest {

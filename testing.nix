@@ -9,7 +9,7 @@
     {
       imports = [
         ./options.nix
-        ./backends/on-machine.nix
+        ./backends/on-machine
       ];
       vars.settings.on-machine.enable = true;
       environment.systemPackages = [
